@@ -1,0 +1,35 @@
+.DELETE_ON_ERROR:#Borra el target en caso de producirse un error en alguno de los comandos
+
+#Definimos las macros
+CC=gcc	#Compilador a usar
+CFLAGS= -Wall -pedantic	#Banderas a utilizar
+OBJS= main.o cpu_info.o kernel_info.o manipulacion_archivos.o sistema_info.o #Se pueden incluir mas ficheros a procesar
+vpath %.h include
+vpath %.c src
+
+ksamp: ${OBJS}
+	${CC} ${CFLAGS} -o ksamp ${OBJS}
+	@echo "Compilación exitosa | ${shell date --iso=seconds}"
+
+main.o: main.c cpu_info.h kernel_info.h manipulacion_archivos.h sistema_info.h
+	${CC} -c $< -o $@
+
+cpu_info.o: cpu_info.c cpu_info.h manipulacion_archivos.h
+	${CC} -c $< -o $@
+
+sistema_info.o: sistema_info.c manipulacion_archivos.h sistema_info.h
+	${CC} -c $< -o $@
+
+kernel_info.o: kernel_info.c manipulacion_archivos.h kernel_info.h
+	${CC} -c $< -o $@
+
+manipulacion_archivos.o: manipulacion_archivos.c manipulacion_archivos.h
+	${CC} -c $< -o $@
+    
+clean_o:
+	@rm -f ${OBJS}
+	@echo "Se eliminaron correctamente archivos *.o"
+
+clean_all:
+	@rm -f ${OBJS} ksamp
+	@echo "Se eliminaron correctamente todos los archivos."
