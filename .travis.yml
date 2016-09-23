@@ -5,3 +5,5 @@ compiler: gcc
 before_script: cd Ksamp/code
 
 script: make
+
+after_success: make clean_o
