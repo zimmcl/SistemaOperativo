@@ -2,6 +2,6 @@ language: c
 
 compiler: gcc
 
-before_script: cd Ksamp/code/Makefile
+before_script: cd Ksamp/code
 
 script: make
