@@ -73,6 +73,7 @@ void parteB(){
 	cpu_modelo();printf("\n");
 	cpu_tipo();printf("\n");
 	kernel_version();printf("\n");
+        sistema_archivo();printf("\n");
 	tiempo_activo();printf("\n");
 	return;
 }
