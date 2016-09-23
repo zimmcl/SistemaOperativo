@@ -45,7 +45,7 @@ int main (int argc, char *argv[])
 				}
 				return 0;
 			default:
-				printf("Options: -s , -l arg1 arg2\n");
+				printf("Opciones: -s , -l arg1 arg2\n");
 				return 0;
 		}
 	}
