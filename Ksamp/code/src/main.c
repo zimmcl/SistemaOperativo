@@ -25,7 +25,7 @@ void parteD(int intervalo, int duracion);
 
 int main (int argc, char *argv[])
 {
-	int arg1, arg2, c;
+    int arg1, arg2, c;
     short int flagC = 0;
     short int flagD = 0;
 
@@ -52,13 +52,13 @@ int main (int argc, char *argv[])
 
     cabecera();
     printf("\n");
-	parteB();
+    parteB();
 
 	if(flagC)
 		parteC();
 	if(flagD){
-		sscanf(argv[argc-2], "%u", &arg1);
-		sscanf(argv[argc-1], "%u", &arg2);
+		sscanf(argv[argc-2], "%d", &arg1);
+		sscanf(argv[argc-1], "%d", &arg2);
 		//parteC();
 		parteD(arg1,arg2);
 	}
