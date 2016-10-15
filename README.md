@@ -9,6 +9,7 @@
 
 |     NOMBRE       |    DNI    | CONTACTO |
 | :--------------: | :-------: |:--------:| 
+| Ceballos, Matias | 35557211  | m.lionel.tkd@gmail.com |
 | Zimmel, Ezequiel | 33382573  | ezequielzimmel@gmail.com |
 
 ---
