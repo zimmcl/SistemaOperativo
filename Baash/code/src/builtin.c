@@ -7,10 +7,17 @@
 
 
 #include <unistd.h>
-#include <ncurses.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "../include/builtin.h"
 #include "../include/prompt.h"
+
+#define BUFFERSIZE 256
+#define PATHLENGTH 32
+
+/* Array que almacena las rutas de la variable PATH */
+char path_array[PATHLENGTH][BUFFERSIZE];
 
 /*
   Lista de comandos builtin.

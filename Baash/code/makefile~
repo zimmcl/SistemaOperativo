@@ -28,5 +28,5 @@ clean_o:
 	@echo "Se eliminaron correctamente archivos *.o"
 
 clean_all:
-	@rm -f ${OBJS} ksamp
+	@rm -f ${OBJS} baash
 	@echo "Se eliminaron correctamente todos los archivos."

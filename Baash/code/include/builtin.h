@@ -15,7 +15,6 @@ int lsh_clear(char **args);
 int lsh_pwd(char **args);
 int lsh_num_builtins(void);
 
-
 extern char *builtin_str[];
 
 extern char *builtin_desc[];

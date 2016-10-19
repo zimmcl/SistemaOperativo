@@ -21,9 +21,11 @@
 #define TOK_BUFFSIZE 64
 #define PATHLENGTH 32
 
-#define TOK_DELIM " \t\r\n\a|><"
+#define TOK_DELIM " "
 #define LIGHT_CYAN "\033[1;36m"
 #define COLOR_RESET "\x1b[0m"
+
+char *operadores[4] = {">","<","|",">>"};
 
 /*
   Declaración de Funciones:
@@ -89,13 +91,37 @@ void ParentProcess(pid_t pid, int status)
    @param
    @return
  */
-int lsh_execute(char **args)
+int lsh_execute(char **args, char **operadores)
 {
-  int i;
+  int i, j=0;
 
   if (args[0] == NULL) {
     // Se introdujo un comando vacio
     return 1;
+  }
+
+  while(operadores[j]!=NULL)
+  {
+	  if(!strcmp(operadores[j],">"))
+	  {
+		  //operacion1();
+		  return 1;
+	  }
+	  if(!strcmp(operadores[j],"<"))
+	  {
+	  	  //operacion2();
+		  return 1;
+	  }
+	  if(!strcmp(operadores[j],">>"))
+	  {
+	  	  //operacion3();
+		  return 1;
+	  }
+	  if(!strcmp(operadores[j],"|"))
+	  {
+	  	  //operacion4();
+		  return 1;
+	  }
   }
 
   for (i = 0; i < lsh_num_builtins(); i++) {
@@ -169,6 +195,7 @@ char **lsh_split_line(char *line)
 {
   int bufsize = TOK_BUFFSIZE, position = 0;
   char **tokens = malloc(bufsize * sizeof(char*));
+  //char **operadores = malloc(bufsize * sizeof(char*));
   char *token, **tokens_backup;
 
   if (!tokens) {
@@ -195,7 +222,60 @@ char **lsh_split_line(char *line)
     token = strtok(NULL, TOK_DELIM);
   }
   tokens[position] = NULL;
+
   return tokens;
+}
+
+//----------------------------------------------------------------
+/**
+   @brief
+   @param
+   @return
+ */
+char **lsh_get_operadores(char **tokens)
+{
+	int bufsize = TOK_BUFFSIZE;
+	char **operadores = malloc(bufsize * sizeof(char*));
+	int j=0, pos=0;
+
+	if (!operadores) {
+	    fprintf(stderr, "lsh: Error en la reserva de memoria\n");
+	    exit(EXIT_FAILURE);
+	  }
+	  /*while(tokens[i]!='\0')
+		  {
+		  printf("%s\n",tokens[i]);
+		  i++;
+		  }*/
+	  while(tokens[j]!=NULL)
+	  {
+		  if (pos >= bufsize) {
+		        bufsize += TOK_BUFFSIZE;
+		        operadores = realloc(operadores, bufsize * sizeof(char*));
+		        if (!operadores) {
+		          fprintf(stderr, "lsh: Error en la reserva de memoria\n");
+		          exit(EXIT_FAILURE);
+		        }
+		  }
+
+		  if(!strcmp(tokens[j],">")||!strcmp(tokens[j],"<")||!strcmp(tokens[j],"|")||!strcmp(tokens[j],">>"))
+		  {
+			  //printf("Entre al IF\n");
+			  operadores[pos]=tokens[j];
+			  pos++;
+			  //operadores++;
+			  //printf("%s\n",*operadores);
+		  }
+		  j++;
+	  }
+	  operadores[pos]=NULL;
+
+	  /*while(*operadores!='\0')
+	  {
+		  printf("Operador %s\n", *operadores);
+		  operadores++;
+	  }*/
+	return operadores;
 }
 
 //----------------------------------------------------------------
@@ -209,7 +289,8 @@ void lsh_loop(void)
 {
   char *line;
   char **args;
-  int status;
+  char **operadores;
+  int status,i=0;
 
   printf("\n");
   printf("ooooo  .oPYo.   .oPYo.            .oPYo.      .oo      .oo .oPYo.  o    o\n");
@@ -223,11 +304,20 @@ void lsh_loop(void)
     prompt();
     line = lsh_read_line();
     args = lsh_split_line(line);
-    status = lsh_execute(args);
+    operadores = lsh_get_operadores(args);
+
+    /*while(operadores[i]!=NULL)
+    	  {
+    		  printf("Operador %s\n", operadores[i]);
+    		  i++;
+    	  }*/
+
+    status = lsh_execute(args, operadores);
 
     //Liberamos memoria
     free(line);
     free(args);
+    free(operadores);
   } while (status);
 }
 

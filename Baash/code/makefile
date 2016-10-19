@@ -2,7 +2,7 @@
 
 #Definimos las macros
 CC=gcc	#Compilador a usar
-CFLAGS= -Wall -pedantic	#Banderas a utilizar
+CFLAGS= -Wall -pedantic -g	#Banderas a utilizar
 OBJS= main.o manipulacion_archivos.o builtin.o prompt.o #Se pueden incluir mas ficheros a procesar
 vpath %.h include
 vpath %.c src
