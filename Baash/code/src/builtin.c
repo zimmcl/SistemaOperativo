@@ -1,10 +1,9 @@
 /*
  * builtin.c
  *
- *  Created on: 13/10/2016
- *      Author: Ezequiel
+ *      Author: Ceballos, Matias
+ *      		Zimmel, Ezequiel
  */
-
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -26,24 +25,18 @@ char *builtin_str[] = {
   "cd",
   "help",
   "exit",
-  "clear",
-  "pwd"
 };
 
 char *builtin_desc[] = {
   "Cambiar directorio de trabajo a directorio pasado como parámetro.",
   "Imprimir texto de ayuda de todos los comandos internos",
   "Finalizar el shell actual en ejecución.",
-  "Limpiar la pantalla.",
-  "Mostrar nombre de ruta absoluta del directorio de trabajo actual."
 };
 
 int (*builtin_func[]) (char **) = {
   &lsh_cd,
   &lsh_help,
   &lsh_exit,
-  &lsh_clear,
-  &lsh_pwd
 };
 
 int lsh_num_builtins(void) {
@@ -63,6 +56,7 @@ int lsh_cd(char **args)
 {
   if (args[1] == NULL) {
     fprintf(stderr, "lsh: espera argumento para \"cd\"\n");
+    chdir(getenv("HOME"));
   } else {
     if (chdir(args[1]) != 0) {
       perror("Error: ");
@@ -102,29 +96,3 @@ int lsh_exit(char **args)
   return 0;
 }
 
-//---------------------------------------------------------------
-/**
-   @brief Comando Builtin: Limpiar pantalla.
-   @param args Lista de argumentos.  No aplica.
-   @return Siempre retorna 1 para continuar ejecutando.
- */
-int lsh_clear(char **args)
-{
-	system("clear");
-	return 1;
-}
-
-//---------------------------------------------------------------
-/**
-   @brief Comando Builtin: Imprime la ruta absoluta del directorio de trabajo actual.
-   @param args Lista de argumentos.  No aplica.
-   @return Siempre retorna 1 para continuar ejecutando.
- */
-int lsh_pwd(char **args)
-{
-	char cwd[1024];
-	getcwd(cwd, sizeof(cwd));
-	fprintf(stdout,"%s\n", cwd);
-
-	return 1;
-}

@@ -1,8 +1,8 @@
 /*
  * prompt.h
  *
- *  Created on: 13/10/2016
- *      Author: ezequiel
+ *      Author: Ceballos, Matias
+ *      		Zimmel, Ezequiel
  */
 
 #ifndef PROMPT_H_

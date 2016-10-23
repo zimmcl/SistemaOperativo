@@ -1,10 +1,9 @@
 /*
  * prompt.c
  *
- *  Created on: 13/10/2016
- *      Author: Ezequiel
+ *      Author: Ceballos, Matias
+ *      		Zimmel, Ezequiel
  */
-
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,9 +18,9 @@
 
 //----------------------------------------------------------------
 /**
-   @brief
-   @param
-   @return
+   @brief Funcion encargada de mostrar el prompt del bash.
+   @param no aplica
+   @return no aplica
  */
 void prompt(void)
 {
@@ -38,9 +37,9 @@ void prompt(void)
 
 //----------------------------------------------------------------
 /**
-   @brief
-   @param
-   @return
+   @brief Obtiene el nombre del equipo
+   @param no aplica
+   @return no aplica
  */
 void hostname(void){
 	char nombre[25];
@@ -56,9 +55,9 @@ void hostname(void){
 
 //----------------------------------------------------------------
 /**
-   @brief
-   @param
-   @return
+   @brief Obtiene tiempo actual
+   @param no aplica
+   @return no aplica
  */
 void tiempo_actual(void){
 	char valor[256];
@@ -73,9 +72,9 @@ void tiempo_actual(void){
 
 //----------------------------------------------------------------
 /**
-   @brief
-   @param
-   @return
+   @brief Obtiene el tipo de usuario
+   @param no aplica
+   @return devuelve 0 para usuario root. !=0 para otro tipo de usuario
  */
 int whoami(void) {
 
@@ -95,9 +94,9 @@ int whoami(void) {
 
 //----------------------------------------------------------------
 /**
-   @brief
-   @param
-   @return
+   @brief Muestra el directorio actual
+   @param no aplica
+   @return no aplica
  */
 void directorio(void)
 {
@@ -121,4 +120,3 @@ void directorio(void)
 	    perror("getcwd() error: ");
 	return;
 }
-
