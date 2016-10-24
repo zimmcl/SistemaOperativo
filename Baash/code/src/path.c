@@ -56,7 +56,7 @@ int get_path_entries(char* path[]) {
  */
 void search_File_Dir(char* arch, char* paths[], char *execvPath){
 	int result=0;
-	char searchDir[50] = "";
+	char searchDir[70] = "";
 	char* archivo;
 
 	//Sector donde se discrimina entre directorios relativos o absolutos

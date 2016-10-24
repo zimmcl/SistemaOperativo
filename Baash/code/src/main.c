@@ -19,7 +19,7 @@
 int background(char* argv[]);
 
 
-int main()
+int main(int argc, char *argv[],char *env[])
 {
 	int pid, statusPID, bgProcess, pipeExecuted; //Banderas de control
 	int argC;
@@ -114,7 +114,12 @@ int main()
 						pipeExecuted = 1;
 					}
 					if(!pipeExecuted){
-						if(execv(executePath, argV)== -1 && buil==0)
+						if(!strcmp(argV[0],"man"))
+						{
+							env[15]=NULL;
+							execve(executePath, argV, env);
+						}
+						else if(execv(executePath, argV)== -1 && buil==0)
 						perror("Error");
 						exit(1);
 					}
