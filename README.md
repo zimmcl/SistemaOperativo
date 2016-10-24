@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
 <img src="https://musicolibre.files.wordpress.com/2014/05/tux.png" width="250" height="250"</p>
 
 **<p align="center">SISTEMA OPERATIVO I | FCEFYN - UNC.</p>**
@@ -10,5 +10,6 @@
 |     NOMBRE       |    DNI    | CONTACTO |
 | :--------------: | :-------: |:--------:| 
 | Zimmel, Ezequiel | 33382573  | ezequielzimmel@gmail.com |
+| Ceballos, Matias | 35557211  | m.lionel.tkd@gmail.com   |
 
 ---
