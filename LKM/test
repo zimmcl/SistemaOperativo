@@ -1,0 +1,56 @@
+#!/bin/bash
+
+CYAN='\x1B[36m'
+NC='\033[0m'
+lkm_e="encriptador"
+lkm_d="desencriptador"
+
+
+echo -e "${CYAN}Trabajo Práctico N° 3: Módulos Encriptador y Desencriptador${NC}"
+echo "-----------"
+echo ""
+
+echo -e "${CYAN}Ejecuntando make${NC}"
+echo "--------------"
+make
+echo ""
+
+echo -e "${CYAN}Insertando y creando dispositivos${NC}"
+echo "------------------------------"
+./crear
+echo ""
+
+echo -e "${CYAN}Ingrese texto a encriptar:${NC}"
+read cadena 
+echo "------------------------------"
+
+echo -e "${CYAN}Cadena a encriptar:${NC} ${cadena}"
+echo "--------------------------------"
+
+echo -e "${CYAN}Encriptando${NC} -> ${cadena} > /dev/${lkm_e}"
+echo  ${cadena} > /dev/${lkm_e}
+echo ""
+
+echo -e "${CYAN}Cadena encriptada${NC}"
+echo "----------------"
+cat /dev/${lkm_e}
+echo ""
+
+echo -e "${CYAN}Desencriptando${NC} -> cat /dev/${lkm_e} > /dev/${lkm_d}"
+cat /dev/${lkm_e} > /dev/${lkm_d}
+echo ""
+
+echo -e "${CYAN}Cadena desencriptada${NC}"
+echo "----------------"
+cat /dev/${lkm_d}
+echo ""
+
+echo -e "${CYAN}Removiendo dispositivos y modulos${NC}"
+echo "------------------------------"
+./remover
+echo ""
+
+echo -e "${CYAN}Limpiando directorio${NC}"
+echo "--------"
+make clean
+echo "------------------------------"

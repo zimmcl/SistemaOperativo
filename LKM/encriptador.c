@@ -1,0 +1,143 @@
+/*
+ * encriptador.c
+ *
+ *  Created on: 31/10/2016
+ *      Author: Ezequiel
+ */
+
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/string.h>
+#include <asm/uaccess.h>
+
+#define SUCCESS 0
+#define Dispositivo "encriptador"
+
+
+/* Major Number */
+static int major_number = 50;
+
+
+/* Valor sumado a cada caracter del mensaje a codificar */
+static int valor = 1;
+
+/* Mensaje a encriptar */
+static char mensaje[100] = {0};
+
+/* Mensaje encriptado */
+static char mensaje_encriptado[100] = {0};
+
+#define SUCCESS 0
+static int Device_Open = 0;
+
+
+/*
+* Funciones
+*/
+
+int device_open(struct inode *inode, struct file *file);
+ssize_t device_read (struct file *file, char __user *buffer, size_t length, loff_t *offset);
+ssize_t device_write (struct file *file, const char __user *buffer, size_t length, loff_t *offset);
+int device_close (struct inode *inode, struct file *file);
+void encriptar_mensaje(void);
+
+/*
+* Esta estructura ejecutará las funciones que se llamen cuando
+* un proceso hace algo al dispositivo que se crea.
+*/
+
+struct file_operations fops = {
+	.open = device_open,
+	.read = device_read,
+	.write = device_write,
+	.release = device_close
+};
+
+
+/* Se llama cuando un proceso intenta abrir el archivo del dispositivo. */
+int device_open(struct inode *inode, struct file *file) {
+	printk(KERN_INFO "Dispositivo de encriptamiento abierto\n");
+
+	/* Prohibimos la ejecución de dos procesos al mismo tiempo */
+	if (Device_Open)
+		return -EBUSY;
+
+	Device_Open++;
+	try_module_get(THIS_MODULE);
+	return SUCCESS;
+
+}
+
+/* Esta función se llama cuando un proceso que ya ha abierto el archivo
+ * del dispositivo intenta leer de él.
+ * */
+ssize_t device_read (struct file *file, char __user *buffer, size_t length, loff_t *offset) {
+	int k;
+	int bytes_read = 0;  /*Número de bytes escritos en el buffer*/
+
+	/*Si estamos al final del mensaje, devuelve 0*/
+	if((*offset) >= strlen(mensaje_encriptado)) {
+		return 0;
+	}
+
+	/*Coloca los datos en el buffer*/
+	for(k = 0; k < strlen(mensaje_encriptado); k++) {
+		put_user(mensaje_encriptado[k], buffer++);
+		bytes_read++;
+	}
+
+	(*offset) += bytes_read;
+
+	/*Se retorna el número de bytes insertados en el buffer*/
+	return bytes_read;
+}
+
+/* Esta función se llama cuando alguien intenta escribir en su archivo de dispositivo. */
+ssize_t device_write (struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
+
+	/*Copio 0 en el total de posiciones de mensaje y mensaje_encriptado*/
+	memset(mensaje, 0, 100);
+	memset(mensaje_encriptado, 0, 100);
+
+	strncpy(mensaje, buffer, length);
+
+	encriptar_mensaje();
+
+	return length;
+}
+
+/* Se llama cuando un proceso intenta cerrar el archivo del dispositivo. */
+int device_close (struct inode *inode, struct file *file) {
+	printk(KERN_INFO "Dispositivo de encriptamiento cerrado\n");
+	/* Habilitamos el dispositivo para una fututa llamada */
+	Device_Open--;
+
+	module_put(THIS_MODULE);
+	return SUCCESS;
+}
+
+/* Funcion que encripta el mensaje */
+void encriptar_mensaje(void) {
+	int k;
+	for(k = 0; k < strlen(mensaje); k++) {
+		mensaje_encriptado[k] = mensaje[k] + valor;
+	}
+}
+
+/*Registrar el dispositivo*/
+int init_module()
+{
+	register_chrdev(major_number, Dispositivo, &fops);
+	return SUCCESS;
+}
+
+/*Desregistrar el dispositivo*/
+void cleanup_module()
+{
+	unregister_chrdev(major_number, Dispositivo);
+}
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("ZIMMEL, Ezequiel | CEBALLOS, Matias");
+MODULE_VERSION("1.0.0");

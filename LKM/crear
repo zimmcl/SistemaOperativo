@@ -1,0 +1,20 @@
+#!/bin/bash
+
+GREEN='\x1B[32m'
+NC='\033[0m'
+lkm_e="encriptador"
+lkm_d="desencriptador"
+
+sudo insmod ${lkm_e}.ko
+echo -e "Modulo ${GREEN}${lkm_e}${NC} insertado satisfactoriamente"
+sudo insmod ${lkm_d}.ko
+echo -e "Modulo ${GREEN}${lkm_d}${NC} insertado satisfactoriamente"
+echo ""
+
+echo -e "Creando entrada para ${lkm_e} en /dev"
+sudo mknod -m  666 /dev/${lkm_e} c 50 0
+echo "/dev/${lkm_e} -> Major number: 50 -> Hecho"
+echo ""
+echo -e "Creando entrada para ${lkm_d} en /dev"
+sudo mknod -m  666 /dev/${lkm_d} c 51 0
+echo "/dev/${lkm_d} -> Major number: 51 -> Hecho"
