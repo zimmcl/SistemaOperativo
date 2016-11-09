@@ -32,9 +32,8 @@ static char mensaje[100] = {0};
 /* Mensaje encriptado */
 static char mensaje_encriptado[100] = {0};
 
-#define SUCCESS 0
+/* Bandera usada para prevenir el acceso concurrente al mismo dispositivo. */
 static int Device_Open = 0;
-
 
 /*
 * Funciones
