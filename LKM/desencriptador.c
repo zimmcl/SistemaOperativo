@@ -1,8 +1,8 @@
 /*
  * desencriptador.c
  *
- *  Created on: 08/11/2016
- *      Author: Ezequiel
+ *      Author: Zimmel, Ezequiel
+ *				Ceballos, Matias
  */
 
 
@@ -16,6 +16,9 @@
 #define Dispositivo "desencriptador"
 
 
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("ZIMMEL, Ezequiel | CEBALLOS, Matias");
+MODULE_VERSION("1.0.0");
 
 /* Major Number */
 static int major_number = 51;
@@ -97,7 +100,7 @@ ssize_t device_read (struct file *file, char __user *buffer, size_t length, loff
 /* Esta función se llama cuando alguien intenta escribir en su archivo de dispositivo. */
 ssize_t device_write (struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
 
-	/*Copio 0 en el total de posiciones de mensaje y mensaje_encriptado*/
+	/*Copio 0 en el total de posiciones de mensaje y mensaje_desencriptado*/
 	memset(mensaje, 0, 100);
 	memset(mensaje_desencriptado, 0, 100);
 
@@ -117,6 +120,19 @@ int device_close (struct inode *inode, struct file *file) {
 	return SUCCESS;
 }
 
+/*Registrar el dispositivo*/
+int driver_init(void)
+{
+	register_chrdev(major_number, Dispositivo, &fops);
+	return SUCCESS;
+}
+
+/*Desregistrar el dispositivo*/
+void driver_exit(void)
+{
+	unregister_chrdev(major_number, Dispositivo);
+}
+
 /* Funcion que desencripta el mensaje */
 void desencriptar_mensaje(void) {
 	int k;
@@ -125,20 +141,7 @@ void desencriptar_mensaje(void) {
 	}
 }
 
-/*Registrar el dispositivo*/
-int init_module()
-{
-	register_chrdev(major_number, Dispositivo, &fops);
-	return SUCCESS;
-}
+module_init(driver_init);
+module_exit(driver_exit);
 
-/*Desregistrar el dispositivo*/
-void cleanup_module()
-{
 
-	unregister_chrdev(major_number, Dispositivo);
-}
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("ZIMMEL, Ezequiel | CEBALLOS, Matias");
-MODULE_VERSION("1.0.0");

@@ -1,8 +1,8 @@
 /*
  * encriptador.c
  *
- *  Created on: 31/10/2016
- *      Author: Ezequiel
+ *      Author: Zimmel, Ezequiel
+ *				Ceballos, Matias
  */
 
 #include <linux/init.h>
@@ -13,6 +13,10 @@
 
 #define SUCCESS 0
 #define Dispositivo "encriptador"
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("ZIMMEL, Ezequiel | CEBALLOS, Matias");
+MODULE_VERSION("1.0.0");
 
 
 /* Major Number */
@@ -117,6 +121,19 @@ int device_close (struct inode *inode, struct file *file) {
 	return SUCCESS;
 }
 
+/*Registrar el dispositivo*/
+int driver_init(void)
+{
+	register_chrdev(major_number, Dispositivo, &fops);
+	return SUCCESS;
+}
+
+/*Desregistrar el dispositivo*/
+void driver_exit(void)
+{
+	unregister_chrdev(major_number, Dispositivo);
+}
+
 /* Funcion que encripta el mensaje */
 void encriptar_mensaje(void) {
 	int k;
@@ -125,19 +142,6 @@ void encriptar_mensaje(void) {
 	}
 }
 
-/*Registrar el dispositivo*/
-int init_module()
-{
-	register_chrdev(major_number, Dispositivo, &fops);
-	return SUCCESS;
-}
+module_init(driver_init);
+module_exit(driver_exit);
 
-/*Desregistrar el dispositivo*/
-void cleanup_module()
-{
-	unregister_chrdev(major_number, Dispositivo);
-}
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("ZIMMEL, Ezequiel | CEBALLOS, Matias");
-MODULE_VERSION("1.0.0");
