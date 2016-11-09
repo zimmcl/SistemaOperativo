@@ -2,7 +2,7 @@
  * desencriptador.c
  *
  *      Author: Zimmel, Ezequiel
- *				Ceballos, Matias
+ *		Ceballos, Matias
  */
 
 
@@ -33,8 +33,7 @@ static char mensaje[100] = {0};
 /* Mensaje desencriptado */
 static char mensaje_desencriptado[100] = {0};
 
-
-#define SUCCESS 0
+/* Bandera usada para prevenir el acceso concurrente al mismo dispositivo. */
 static int Device_Open = 0;
 
 /*
