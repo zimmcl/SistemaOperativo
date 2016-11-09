@@ -2,7 +2,7 @@
  * encriptador.c
  *
  *      Author: Zimmel, Ezequiel
- *				Ceballos, Matias
+ *		Ceballos, Matias
  */
 
 #include <linux/init.h>
