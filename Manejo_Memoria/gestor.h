@@ -8,7 +8,6 @@
 #ifndef GESTOR_H_
 #define GESTOR_H_
 
-//typedef struct s_block;
 
 /* Estructura del bloque */
 struct s_block {
@@ -34,7 +33,8 @@ struct s_block *extender_heap(struct s_block *last, size_t size);
 struct s_block *obtener_puntero_bloque(void *ptr);
 struct s_block *fusionar_bloques (struct s_block *block);
 void dividir_bloque(struct s_block *block, size_t size);
-void actualizar_indices(void *ptr);
-void imprimir_lista_memoria(void *ptr);
+void actualizar_indices(void *ptr[]);
+int cantidad_bloques(void);
+void imprimir_bloques_memoria(void *ptr[]);
 
 #endif /* GESTOR_H_ */

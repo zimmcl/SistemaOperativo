@@ -74,7 +74,6 @@ void *malloc(size_t size) {
     }
   }
 
-  //actualizar_indices(base);
   return(block + 1);
 }
 
@@ -105,7 +104,6 @@ void free(void *ptr) {
       block->free = 1;
     }
   }
-  //actualizar_indices(ptr);
 }
 
 /* Función dividir_bloque() */
@@ -131,6 +129,7 @@ void dividir_bloque(struct s_block *block, size_t size) {
   /* Y el siguiente bloque es el "nuevo" */
   block->next = nuevo;
 
+
   /* El tamaño del nuevo es el tamaño total del anterior menos el tamaño
      del bloque, y el tamaño de la memoria utilizada en la primera division */
   nuevo->size = total_size - size - BLOCK_SIZE;
@@ -139,6 +138,7 @@ void dividir_bloque(struct s_block *block, size_t size) {
   nuevo->prev = block;
   /* Y lo marco como libre */
   nuevo->free = 1;
+
 }
 
 /* Función fusionar_bloques() */
@@ -209,35 +209,45 @@ struct s_block *obtener_puntero_bloque(void *ptr) {
   return (struct s_block *) ptr-1;
 }
 
-
-void actualizar_indices(void *ptr){
-    printf("A: valor puntero %p: \n", ptr);
-	obtener_puntero_bloque(ptr)->index=0;
-	printf("Valor indice: %d \n", obtener_puntero_bloque(ptr)->index);
-	while(obtener_puntero_bloque(ptr)->next!=NULL)
+/* Función actualizar_indices() */
+void actualizar_indices(void *ptr[]){
+	/*int i=0;
+	obtener_puntero_bloque(ptr[i])->index=0;
+	printf("Indice %d de ptr[%p] \n",obtener_puntero_bloque(ptr[i])->index,ptr[i]);
+	while(obtener_puntero_bloque(ptr[i])->next!=NULL)
 	{
-		printf("B: valor puntero %p: \n", ptr);
-		obtener_puntero_bloque(ptr)->next->index=(obtener_puntero_bloque(ptr)->index)+1;
-		ptr++;
-		printf("Valor indice: %d \n", obtener_puntero_bloque(ptr)->index);
-		printf("sume ptr\n");
-	}
+		obtener_puntero_bloque(ptr[i])->next->index=(obtener_puntero_bloque(ptr[i])->index)+1;
+		printf("Indice %d de ptr[%p] \n",obtener_puntero_bloque(ptr[i])->next->index,ptr[i+1]);
+		i++;
+	}*/
 	/*Actualizo los indices de los bloques*/
-	/*b = obtener_puntero_bloque(ptr);
+	b = base;
 	b->index=0;
 	while(b->next != NULL) {
 	      	b->next->index=b->index+1;
 	       	b = b->next;
-	  	}*/
-	printf("B: salgo\n");
+	  	}
+}
+
+/* Función cantidad_bloques() */
+int cantidad_bloques(void)
+{
+	if(!base)
+		return 0;
+	b = base;
+	int count = 0;
+	while(b){
+		count++;
+		b = b->next;
+	}
+	return count;
 }
 
 /* Función imprimir_lista_memoria() */
 /* Sólo para debugging, imprime la lista doblemente enlazada
    de una forma que sea sencilla de ver e interpretar */
-void imprimir_lista_memoria(void *ptr) {
-	b = obtener_puntero_bloque(ptr);
-
+void imprimir_bloques_memoria(void *ptr[]) {
+	b = base;
 	/* Si la lista esta vacia no hago nada */
 	if(b == NULL) return;
 
@@ -247,11 +257,11 @@ void imprimir_lista_memoria(void *ptr) {
 	printf("| %8s | %8s | %8s | %10s | %10s | %10s |\n", "Nº Bloque", "Tamaño", "Libre", "Anterior", "Actual", "Siguiente");
 	printf("+----------+----------+----------+------------+------------+------------+\n");
 
-	do {
+	while(b->next != NULL) {
 		printf("| %8d | %8zu | %8s | %10p | %10p | %10p |\n", b->index, b->size, (b->free) ? "Si": "No", b->prev, b, b->next);
 		b=b->next;
-	} while(b != NULL);
+	}
+	printf("| %8d | %8zu | %8s | %10p | %10p | %10p |\n", b->index, b->size, (b->free) ? "Si": "No", b->prev, b, b->next);
 
 	printf("+----------+----------+----------+------------+------------+------------+\n");
-
 }

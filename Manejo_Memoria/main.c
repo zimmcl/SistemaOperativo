@@ -33,11 +33,11 @@ int main(int argc, char *argv[]){
         case 0 :
         	printf("\n");
         	if(*ptr!=NULL)
-        	actualizar_indices(*ptr);
+        	actualizar_indices(ptr);
         	alocar_memoria(ptr);
-        	actualizar_indices(*ptr);
+        	actualizar_indices(ptr);
         	printf("Bloques de memoria alocada:\n");
-        	imprimir_lista_memoria(*ptr);
+        	imprimir_bloques_memoria(ptr);
         	printf("\n");
            break;
         case 1 :
@@ -48,11 +48,11 @@ int main(int argc, char *argv[]){
         	}
         	printf("\n");
         	printf("Libero bloques con free():\n");
-            actualizar_indices(*ptr);
+            actualizar_indices(ptr);
             liberar_memoria(ptr);
-        	actualizar_indices(*ptr);
+        	actualizar_indices(ptr);
             printf("Bloques de memoria alocada:\n");
-            imprimir_lista_memoria(*ptr);
+            imprimir_bloques_memoria(ptr);
             printf("\n");
            break;
         case 9 :
